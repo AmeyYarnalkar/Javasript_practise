@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanban</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   <div class="left-box">
+    <div class="list-com" draggable="true">Component 1</div>
+    <div class="list-com" draggable="true">Component 2</div>
+    <div class="list-com" draggable="true">Component 3</div>
+    <div class="list-com" draggable="true">Component 4</div>
+   </div>
+   <div class="right-box"></div>
+</body>
+<script>
+    let lists = document.getElementsByClassName("list-com");
+    let rightBox = document.getElementsByClassName("right-box")[0];
+    let leftbox = document.getElementsByClassName("left-box")[0];
+    let selected = null;
+
+    // Loop through each draggable element
+    for (let list of lists) {
+        list.addEventListener("dragstart", function (e) {
+            selected = e.target; // Store the dragged element
+            e.target.style.opacity = "0.5"; // Make the dragged element semi-transparent for feedback
+            e.target.style.transform = "scale(1.05)"; // Slightly enlarge the item during drag
+        });
+
+        list.addEventListener("dragend", function (e) {
+            e.target.style.opacity = "1"; // Reset opacity after dragging ends
+            e.target.style.transform = "scale(1)"; // Reset the size
+        });
+    }
+
+    // Allow elements to be dropped into the right box
+    rightBox.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    });
+
+    rightBox.addEventListener("drop", function (e) {
+        e.preventDefault();
+        rightBox.appendChild(selected); // Append the dragged element
+    });
+
+    // Allow elements to be dropped back into the left box
+    leftbox.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    });
+
+    leftbox.addEventListener("drop", function (e) {
+        e.preventDefault();
+        leftbox.appendChild(selected); // Append the dragged element back
+    });
+</script>
+</html>
